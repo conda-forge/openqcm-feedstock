@@ -15,7 +15,7 @@ source:
   patches: setup-packaging.patch
 
 build:
-  number: 0
+  number: 1
   entry_points:
     - openQCM = openQCM.__main__:main
 
