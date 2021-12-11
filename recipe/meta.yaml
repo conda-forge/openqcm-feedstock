@@ -12,7 +12,9 @@ source:
   # because of the presence of spurious hidden file in the source distribution
   # (.DS_Store, etc.) conda-build doesn't guess correctly the "strip_level"
   # for the folder of the patches and the patch needs to be edited accordingly...
-  patches: setup-packaging.patch
+  patches:
+    - setup-packaging.patch
+    - 0001-Fix-pyqt5-import.patch
 
 build:
   number: 1
@@ -33,7 +35,7 @@ requirements:
     - pandas
     - progressbar
     - pyserial
-    - pyqt
+    - pyqt >=5
     - pyqtgraph
     - scipy
     - menuinst >=1.4.18  # [win]
