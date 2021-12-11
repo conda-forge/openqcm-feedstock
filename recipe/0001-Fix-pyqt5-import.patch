@@ -1,0 +1,218 @@
+From bc7fcb75ed455ce15d42e0a9b348d0cc748c1960 Mon Sep 17 00:00:00 2001
+From: Eric Prestat <eric.prestat@gmail.com>
+Date: Sat, 11 Dec 2021 10:56:53 +0000
+Subject: [PATCH] Fix pyqt5 import
+
+---
+ app.py                   |  4 ++--
+ openQCM/app.py           |  4 ++--
+ openQCM/ui/mainWindow.py | 20 ++++++++++----------
+ openQCM/ui/popUp.py      | 28 ++++++++++++++--------------
+ 4 files changed, 28 insertions(+), 28 deletions(-)
+
+diff --git a/OPENQCM/app.py b/OPENQCM/app.py
+index e30bf81..f600a22 100644
+--- a/OPENQCM/app.py
++++ b/OPENQCM/app.py
+@@ -1,7 +1,7 @@
+ from multiprocessing import freeze_support
+ import sys
+ import os #add
+-from PyQt5 import QtGui
++from PyQt5 import QtWidgets
+ from openQCM.common.architecture import Architecture,OSType
+ from openQCM.common.arguments import Arguments
+ from openQCM.common.logger import Logger as Log
+@@ -23,7 +23,7 @@ class OPENQCM:
+           
+         freeze_support()
+         self._args = self._init_logger()
+-        self._app = QtGui.QApplication(argv)
++        self._app = QtWidgets.QApplication(argv)
+         ##
+         if Architecture.get_os() is OSType.windows:
+           '''
+diff --git a/OPENQCM/openQCM/app.py b/OPENQCM/openQCM/app.py
+index e30bf81..f600a22 100644
+--- a/OPENQCM/openQCM/app.py
++++ b/OPENQCM/openQCM/app.py
+@@ -1,7 +1,7 @@
+ from multiprocessing import freeze_support
+ import sys
+ import os #add
+-from PyQt5 import QtGui
++from PyQt5 import QtWidgets
+ from openQCM.common.architecture import Architecture,OSType
+ from openQCM.common.arguments import Arguments
+ from openQCM.common.logger import Logger as Log
+@@ -23,7 +23,7 @@ class OPENQCM:
+           
+         freeze_support()
+         self._args = self._init_logger()
+-        self._app = QtGui.QApplication(argv)
++        self._app = QtWidgets.QApplication(argv)
+         ##
+         if Architecture.get_os() is OSType.windows:
+           '''
+diff --git a/OPENQCM/openQCM/ui/mainWindow.py b/OPENQCM/openQCM/ui/mainWindow.py
+index 57128c7..bce94de 100644
+--- a/OPENQCM/openQCM/ui/mainWindow.py
++++ b/OPENQCM/openQCM/ui/mainWindow.py
+@@ -6,7 +6,7 @@ from openQCM.ui.mainWindow_ui import Ui_Controls, Ui_Info, Ui_Plots
+ 
+ from pyqtgraph import AxisItem
+ import pyqtgraph as pg
+-from PyQt5 import QtCore, QtGui
++from PyQt5 import QtCore, QtGui, QtWidgets
+ from openQCM.core.worker import Worker
+ from openQCM.core.constants import Constants, SourceType, DateAxis, NonScientificAxis
+ from openQCM.ui.popUp import PopUp
+@@ -20,7 +20,7 @@ TAG = ""#"[MainWindow]"
+ # Package that handles the UIs elements and connects to worker service to execute processes
+ ##########################################################################################
+ 
+-class PlotsWindow(QtGui.QMainWindow):
++class PlotsWindow(QtWidgets.QMainWindow):
+      
+     def __init__(self, samples=Constants.argument_default_samples):
+         super().__init__()  
+@@ -32,7 +32,7 @@ class PlotsWindow(QtGui.QMainWindow):
+         res =PopUp.question(self, Constants.app_title, "Are you sure you want to quit openQCM application now?")
+         if res: 
+            #self.close()
+-           QtGui.QApplication.quit()
++           QtWidgets.QApplication.quit()
+         else:
+            event.ignore()#pass
+         #sys.exit(0)
+@@ -43,7 +43,7 @@ class PlotsWindow(QtGui.QMainWindow):
+ 
+     
+ #------------------------------------------------------------------------------
+-class InfoWindow(QtGui.QMainWindow):    
++class InfoWindow(QtWidgets.QMainWindow):    
+     
+     def __init__(self, samples=Constants.argument_default_samples):
+         super().__init__()
+@@ -55,7 +55,7 @@ class InfoWindow(QtGui.QMainWindow):
+         res =PopUp.question(self, Constants.app_title, "Are you sure you want to quit openQCM application now?")
+         if res: 
+            #self.close()
+-           QtGui.QApplication.quit()
++           QtWidgets.QApplication.quit()
+         else:
+            event.ignore()
+     '''
+@@ -64,7 +64,7 @@ class InfoWindow(QtGui.QMainWindow):
+            event.ignore()    
+ 
+ #------------------------------------------------------------------------------
+-class ControlsWindow(QtGui.QMainWindow):    
++class ControlsWindow(QtWidgets.QMainWindow):    
+     
+     def __init__(self, samples=Constants.argument_default_samples):
+         super().__init__()
+@@ -76,13 +76,13 @@ class ControlsWindow(QtGui.QMainWindow):
+         res =PopUp.question(self, Constants.app_title, "Are you sure you want to quit openQCM application now?")
+         if res: 
+            #self.close()
+-           QtGui.QApplication.quit()
++           QtWidgets.QApplication.quit()
+         else:
+            event.ignore()
+ 
+ #------------------------------------------------------------------------------
+ 
+-class MainWindow(QtGui.QMainWindow):
++class MainWindow(QtWidgets.QMainWindow):
+     
+     ###########################################################################
+     # Initializes methods, values and sets the UI
+@@ -91,7 +91,7 @@ class MainWindow(QtGui.QMainWindow):
+         
+         #:param samples: Default samples shown in the plot :type samples: int.
+         # to be always placed at the beginning, initializes some important methods
+-        QtGui.QMainWindow.__init__(self)
++        QtWidgets.QMainWindow.__init__(self)
+         
+         # Sets up the user interface from the generated Python script using Qt Designer
+         # Instantiates Ui classes
+@@ -940,4 +940,4 @@ class MainWindow(QtGui.QMainWindow):
+         url_download = 'https://openqcm.com/shared/q-1/openQCM_Q-1_py_v{}.zip '.format(self._webinfo[0]) 
+         webbrowser.open(url_download)
+         
+-       
+\ No newline at end of file
++       
+diff --git a/OPENQCM/openQCM/ui/popUp.py b/OPENQCM/openQCM/ui/popUp.py
+index eaa44f5..d384dea 100644
+--- a/OPENQCM/openQCM/ui/popUp.py
++++ b/OPENQCM/openQCM/ui/popUp.py
+@@ -1,4 +1,4 @@
+-from PyQt5 import QtGui
++from PyQt5.QtWidgets import QMessageBox
+ 
+ TAG = "[PopUp]"
+ 
+@@ -18,26 +18,26 @@ class PopUp:
+         :param message: Message to be shown in the dialog :type message: str.
+         :return: 1 if button1 was pressed, 0 if button2   :rtype: int.
+         """
+-        #ans = QtGui.QMessageBox.question(parent, title, message, QtGui.QMessageBox.Yes, QtGui.QMessageBox.No)
+-        #if ans == QtGui.QMessageBox.Yes:
++        #ans = QMessageBox.question(parent, title, message, QMessageBox.Yes, QMessageBox.No)
++        #if ans == QMessageBox.Yes:
+         #    print('Si')
+         #    return True
+-        #elif ans == QtGui.QMessageBox.No:
++        #elif ans == QMessageBox.No:
+         #    print('No')
+         #    return False
+         left = 700
+         top = 400
+         width = 340
+         height = 220
+-        box = QtGui.QMessageBox(parent)
+-        box.setIcon(QtGui.QMessageBox.Question)
++        box = QMessageBox(parent)
++        box.setIcon(QMessageBox.Question)
+         box.setWindowTitle(title)
+         box.setGeometry(left, top, width, height)
+         box.setText(message)
+-        box.setStandardButtons(QtGui.QMessageBox.Yes|QtGui.QMessageBox.No)
+-        button1 = box.button(QtGui.QMessageBox.Yes)
++        box.setStandardButtons(QMessageBox.Yes|QMessageBox.No)
++        button1 = box.button(QMessageBox.Yes)
+         button1.setText('@10MHz')
+-        button2 = box.button(QtGui.QMessageBox.No)
++        button2 = box.button(QMessageBox.No)
+         button2.setText(' @5MHz')
+         box.exec_()
+         
+@@ -58,9 +58,9 @@ class PopUp:
+         :param title: Title of the dialog :type title: str.
+         :param message: Message to be shown in the dialog :type message: str.
+         """
+-        QtGui.QMessageBox.warning(parent, title, message, QtGui.QMessageBox.Ok)
+-        #msgBox=QtGui.QMessageBox.warning(parent, title, message, QtGui.QMessageBox.Ok)
+-        #msgBox = QtGui.QMessageBox()
++        QMessageBox.warning(parent, title, message, QMessageBox.Ok)
++        #msgBox = QMessageBox.warning(parent, title, message, QMessageBox.Ok)
++        #msgBox = QMessageBox()
+         #msgBox.setIconPixmap( QtGui.QPixmap("favicon.png"))
+         #msgBox.exec_() 
+ 
+@@ -75,8 +75,8 @@ class PopUp:
+         :param message: Message to be shown in the dialog :type message: str.
+         :return: True if Yes button was pressed :rtype: bool.
+         """
+-        ans = QtGui.QMessageBox.question(parent, title, message, QtGui.QMessageBox.Yes, QtGui.QMessageBox.No)
+-        if ans == QtGui.QMessageBox.Yes:
++        ans = QMessageBox.question(parent, title, message, QMessageBox.Yes, QMessageBox.No)
++        if ans == QMessageBox.Yes:
+             return True
+         else:
+             return False
+-- 
+2.30.2
+
