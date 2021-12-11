@@ -17,7 +17,7 @@ source:
     - 0001-Fix-pyqt5-import.patch
 
 build:
-  number: 1
+  number: 2
   entry_points:
     - openQCM = openQCM.__main__:main
 
